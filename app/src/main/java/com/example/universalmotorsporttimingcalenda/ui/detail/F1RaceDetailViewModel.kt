@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+import com.example.universalmotorsporttimingcalenda.data.model.Session
+
 data class RaceDetailUiState(
     val round: Int = 0,
     val raceName: String = "",
@@ -21,7 +23,13 @@ data class RaceDetailUiState(
     val locality: String = "",
     val country: String = "",
     val date: String = "",
-    val time: String? = ""
+    val time: String? = "",
+    val firstPractice: Session? = null,
+    val secondPractice: Session? = null,
+    val thirdPractice: Session? = null,
+    val qualifying: Session? = null,
+    val sprint: Session? = null,
+    val sprintQualifying: Session? = null
 )
 
 @HiltViewModel
@@ -54,5 +62,11 @@ fun Race.toDetailUiState(): RaceDetailUiState = RaceDetailUiState(
     locality = this.locality,
     country = this.country,
     date = this.date,
-    time = this.time
+    time = this.time,
+    firstPractice = this.firstPractice,
+    secondPractice = this.secondPractice,
+    thirdPractice = this.thirdPractice,
+    qualifying = this.qualifying,
+    sprint = this.sprint,
+    sprintQualifying = this.sprintQualifying
 )

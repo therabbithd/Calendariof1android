@@ -32,6 +32,31 @@ fun F1RaceDetailScreen(
         Text(text = uiState.circuit, style = MaterialTheme.typography.titleMedium)
         Text(text = "${uiState.locality} (${uiState.country})")
         Text(text = "Fecha: ${uiState.date}")
+
         uiState.time?.let { Text(text = "Hora: $it") }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Horarios de Sesión", style = MaterialTheme.typography.titleLarge)
+
+        uiState.firstPractice?.let { SessionRow("Práctica 1", it) }
+        uiState.secondPractice?.let { SessionRow("Práctica 2", it) }
+        uiState.thirdPractice?.let { SessionRow("Práctica 3", it) }
+        uiState.qualifying?.let { SessionRow("Clasificación", it) }
+        uiState.sprint?.let { SessionRow("Sprint", it) }
+        uiState.sprintQualifying?.let { SessionRow("Clasificación Sprint", it) }
+    }
+}
+
+@Composable
+fun SessionRow(name: String, session: com.example.universalmotorsporttimingcalenda.data.model.Session) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = name, style = MaterialTheme.typography.bodyLarge)
+        Column(horizontalAlignment = Alignment.End) {
+            Text(text = session.date, style = MaterialTheme.typography.bodyMedium)
+            Text(text = session.time, style = MaterialTheme.typography.bodyMedium)
+        }
     }
 }

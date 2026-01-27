@@ -9,4 +9,15 @@ data class Race(
     val country: String,
     val date: String,
     val time: String?,
+    val firstPractice: Session?,
+    val secondPractice: Session?,
+    val thirdPractice: Session?,
+    val qualifying: Session?,
+    val sprint: Session?,
+    val sprintQualifying: Session?
+)
+
+data class Session(
+    val date: String,
+    val time: String
 )

@@ -65,6 +65,19 @@ fun RaceRemote.toExternal(): Race {
         locality = circuit.location.locality,
         country = circuit.location.country,
         date = date,
+        time = time,
+        firstPractice = firstPractice?.toExternal(),
+        secondPractice = secondPractice?.toExternal(),
+        thirdPractice = thirdPractice?.toExternal(),
+        qualifying = qualifying?.toExternal(),
+        sprint = sprint?.toExternal(),
+        sprintQualifying = sprintQualifying?.toExternal()
+    )
+}
+
+fun SessionRemote.toExternal(): com.example.universalmotorsporttimingcalenda.data.model.Session {
+    return com.example.universalmotorsporttimingcalenda.data.model.Session(
+        date = date,
         time = time
     )
 }

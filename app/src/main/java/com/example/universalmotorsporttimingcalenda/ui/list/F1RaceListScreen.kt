@@ -69,8 +69,8 @@ fun F1RaceListScreen(
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Text(text = item.circuit)
-                            Text(text = "${item.locality} (${item.country})")
-                            Text(text = "${item.date} ${item.time ?: ""}")
+                            Text(text = item.country)
+                            Text(text = item.date)
                         }
                     }
                 }
