@@ -33,8 +33,6 @@ fun F1RaceDetailScreen(
         Text(text = "${uiState.locality} (${uiState.country})")
         Text(text = "Fecha: ${uiState.date}")
 
-        uiState.time?.let { Text(text = "Hora: $it") }
-
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Horarios de Sesión", style = MaterialTheme.typography.titleLarge)
 
@@ -44,6 +42,7 @@ fun F1RaceDetailScreen(
         uiState.qualifying?.let { SessionRow("Clasificación", it) }
         uiState.sprint?.let { SessionRow("Sprint", it) }
         uiState.sprintQualifying?.let { SessionRow("Clasificación Sprint", it) }
+        uiState.raceSession?.let { SessionRow("Carrera", it) }
     }
 }
 

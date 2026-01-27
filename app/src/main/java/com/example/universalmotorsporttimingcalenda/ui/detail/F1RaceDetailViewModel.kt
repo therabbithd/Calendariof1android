@@ -29,7 +29,8 @@ data class RaceDetailUiState(
     val thirdPractice: Session? = null,
     val qualifying: Session? = null,
     val sprint: Session? = null,
-    val sprintQualifying: Session? = null
+    val sprintQualifying: Session? = null,
+    val raceSession: Session? = null
 )
 
 @HiltViewModel
@@ -55,18 +56,41 @@ class F1RaceDetailViewModel @Inject constructor(
     }
 }
 
-fun Race.toDetailUiState(): RaceDetailUiState = RaceDetailUiState(
-    round = this.round,
-    raceName = this.raceName,
-    circuit = this.circuitName,
-    locality = this.locality,
-    country = this.country,
-    date = this.date,
-    time = this.time,
-    firstPractice = this.firstPractice,
-    secondPractice = this.secondPractice,
-    thirdPractice = this.thirdPractice,
-    qualifying = this.qualifying,
-    sprint = this.sprint,
-    sprintQualifying = this.sprintQualifying
-)
+fun Race.toDetailUiState(): RaceDetailUiState {
+    val (formattedRaceDate, formattedRaceTime) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(this.date, this.time)
+
+    return RaceDetailUiState(
+        round = this.round,
+        raceName = this.raceName,
+        circuit = this.circuitName,
+        locality = this.locality,
+        country = this.country,
+        date = formattedRaceDate,
+        time = formattedRaceTime,
+        firstPractice = this.firstPractice?.let {
+             val (d, t) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(it.date, it.time)
+             Session(d, t)
+        },
+        secondPractice = this.secondPractice?.let {
+            val (d, t) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(it.date, it.time)
+            Session(d, t)
+        },
+        thirdPractice = this.thirdPractice?.let {
+            val (d, t) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(it.date, it.time)
+            Session(d, t)
+        },
+        qualifying = this.qualifying?.let {
+            val (d, t) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(it.date, it.time)
+            Session(d, t)
+        },
+        sprint = this.sprint?.let {
+            val (d, t) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(it.date, it.time)
+            Session(d, t)
+        },
+        sprintQualifying = this.sprintQualifying?.let {
+            val (d, t) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(it.date, it.time)
+            Session(d, t)
+        },
+        raceSession = Session(formattedRaceDate, formattedRaceTime)
+    )
+}
