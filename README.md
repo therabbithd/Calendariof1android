@@ -41,3 +41,16 @@ La aplicación sigue los principios de la **Arquitectura Limpia (Clean Architect
 *   **UI Layer**: Manejada por Compose y ViewModels.
 *   **Domain Layer**: Lógica de negocio y modelos de datos.
 *   **Data Layer**: Repositorios que gestionan la obtención de datos desde la API (Remoto) o la base de datos (Local/Room).
+
+## 🗺️ Maps Integration
+
+The application uses Google Maps API to display race circuits. To enable this feature you need to provide a **Maps API Key**.
+
+1. Obtain an API key from the Google Cloud Console (enable Maps SDK for Android).
+2. Add the key to your environment file:
+
+```
+MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
+```
+
+The key will be read from the `.env` file at runtime.

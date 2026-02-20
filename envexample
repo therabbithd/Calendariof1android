@@ -1,1 +1,2 @@
-MAPS_API_KEY=KEY
+# MAPS_API_KEY: Google Maps API key required for Maps integration
+MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
