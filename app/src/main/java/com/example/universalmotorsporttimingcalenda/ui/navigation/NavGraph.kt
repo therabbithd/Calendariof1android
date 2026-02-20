@@ -17,11 +17,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.universalmotorsporttimingcalenda.ui.common.AppDrawer
 import com.example.universalmotorsporttimingcalenda.ui.common.AppTopBar
+import com.example.universalmotorsporttimingcalenda.util.SessionManager
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavGraph() {
+fun NavGraph(sessionManager: SessionManager) {
     val navController = rememberNavController()
     val startDestination = Route.List
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -33,6 +34,9 @@ fun NavGraph() {
         drawerState = drawerState,
         drawerContent = {
             AppDrawer(
+                userName = sessionManager.userName,
+                userEmail = sessionManager.userEmail,
+                userAvatar = sessionManager.userAvatar,
                 currentRoute = currentRoute,
                 navigateToHome = {
                     navController.navigate(Route.List) {
@@ -41,6 +45,9 @@ fun NavGraph() {
                 },
                 navigateToLogin = {
                     navController.navigate(Route.Login)
+                },
+                navigateToProfile = {
+                    navController.navigate(Route.Profile)
                 },
                 closeDrawer = {
                     scope.launch { drawerState.close() }
@@ -76,9 +83,12 @@ fun NavGraph() {
                 loginDestination(
                     contentModifier,
                     onLoginSuccess = {
-                        navController.popBackStack()
+                        navController.navigate(Route.Profile) {
+                            popUpTo(Route.Login) { inclusive = true }
+                        }
                     }
                 )
+                profileDestination(contentModifier)
             }
         }
     }

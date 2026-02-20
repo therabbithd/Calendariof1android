@@ -14,7 +14,9 @@ data class Race(
     val thirdPractice: Session?,
     val qualifying: Session?,
     val sprint: Session?,
-    val sprintQualifying: Session?
+    val sprintQualifying: Session?,
+    val lat: String,
+    val long: String
 )
 
 data class Session(

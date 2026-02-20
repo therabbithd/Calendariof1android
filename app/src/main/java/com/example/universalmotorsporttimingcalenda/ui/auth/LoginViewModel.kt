@@ -10,9 +10,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+import com.example.universalmotorsporttimingcalenda.util.SessionManager
+
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Initial)
@@ -23,7 +26,13 @@ class LoginViewModel @Inject constructor(
             _uiState.value = LoginUiState.Loading
             repository.login(email, password).collect { result ->
                 if (result.isSuccess) {
-                    _uiState.value = LoginUiState.Success(result.getOrNull()?.token ?: "")
+                    val response = result.getOrNull()
+                    sessionManager.token = response?.token
+                    sessionManager.userName = response?.user?.name
+                    sessionManager.userEmail = response?.user?.email
+                    // Check for avatar in both user object and root response
+                    sessionManager.userAvatar = response?.user?.avatar ?: response?.avatar
+                    _uiState.value = LoginUiState.Success(response?.token ?: "")
                 } else {
                     _uiState.value = LoginUiState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
                 }

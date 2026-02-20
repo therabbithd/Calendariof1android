@@ -3,7 +3,7 @@ package com.example.universalmotorsporttimingcalenda.data.remote
 import com.example.universalmotorsporttimingcalenda.data.remote.model.AuthResponse
 import com.example.universalmotorsporttimingcalenda.data.remote.model.LoginRequest
 import com.example.universalmotorsporttimingcalenda.data.remote.model.RegisterRequest
-import com.example.universalmotorsporttimingcalenda.data.remote.model.UserDto
+import com.example.universalmotorsporttimingcalenda.data.remote.model.ProfileDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,5 +20,5 @@ interface AuthApi {
     suspend fun login(@Body request: LoginRequest): Response<AuthResponse>
 
     @GET("/api/users/me")
-    suspend fun getMe(@Header("Authorization") token: String): Response<UserDto>
+    suspend fun getMe(@Header("Authorization") token: String): Response<ProfileDto>
 }

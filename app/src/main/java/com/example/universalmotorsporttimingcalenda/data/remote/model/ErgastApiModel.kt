@@ -71,7 +71,9 @@ fun RaceRemote.toExternal(): Race {
         thirdPractice = thirdPractice?.toExternal(),
         qualifying = qualifying?.toExternal(),
         sprint = sprint?.toExternal(),
-        sprintQualifying = sprintQualifying?.toExternal()
+        sprintQualifying = sprintQualifying?.toExternal(),
+        lat = circuit.location.lat,
+        long = circuit.location.long
     )
 }
 

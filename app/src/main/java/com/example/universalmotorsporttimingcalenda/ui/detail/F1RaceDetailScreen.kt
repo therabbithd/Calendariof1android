@@ -136,6 +136,36 @@ fun F1RaceDetailScreen(
                 }
             }
 
+            // Google Map Section
+            if (uiState.lat.isNotEmpty() && uiState.long.isNotEmpty()) {
+                val circuitLocation = com.google.android.gms.maps.model.LatLng(
+                    uiState.lat.toDoubleOrNull() ?: 0.0,
+                    uiState.long.toDoubleOrNull() ?: 0.0
+                )
+                val cameraPositionState = com.google.maps.android.compose.rememberCameraPositionState {
+                    position = com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(circuitLocation, 12f)
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    com.google.maps.android.compose.GoogleMap(
+                        modifier = Modifier.fillMaxSize(),
+                        cameraPositionState = cameraPositionState
+                    ) {
+                        com.google.maps.android.compose.Marker(
+                            state = com.google.maps.android.compose.rememberMarkerState(position = circuitLocation),
+                            title = uiState.circuit,
+                            snippet = "${uiState.locality}, ${uiState.country}"
+                        )
+                    }
+                }
+            }
+
             // Session Schedule Section
             Text(
                 text = "HORARIOS DE SESIÓN",

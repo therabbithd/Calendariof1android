@@ -17,11 +17,18 @@ sealed class Route(val route: String) {
     data class Detail(val id: Long) : Route(route = "race_detail[$id]")
 
     @Serializable
+    data object Profile : Route("profile")
+
+    @Serializable
     data object Login : Route("login")
 }
 
 fun NavController.navigateToRaceDetails(round: Int) {
     this.navigate(Route.Detail(round.toLong()))
+}
+
+fun NavController.navigateToProfile() {
+    this.navigate(Route.Profile)
 }
 
 fun NavGraphBuilder.raceDetailDestination(
@@ -56,6 +63,16 @@ fun NavGraphBuilder.loginDestination(
         com.example.universalmotorsporttimingcalenda.ui.auth.LoginScreen(
             modifier = modifier,
             onLoginSuccess = onLoginSuccess
+        )
+    }
+}
+
+fun NavGraphBuilder.profileDestination(
+    modifier: Modifier = Modifier,
+) {
+    composable<Route.Profile> {
+        com.example.universalmotorsporttimingcalenda.ui.auth.ProfileScreen(
+            modifier = modifier,
         )
     }
 }

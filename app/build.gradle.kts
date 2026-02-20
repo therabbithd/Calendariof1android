@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.serialize)
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
@@ -40,6 +41,19 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+secrets {
+    // Optionally specify a different file name or default values
+    propertiesFileName = "local.properties"
+
+    // A properties file at this path is expected to be present
+    // defaultPropertiesFileName = "secrets.defaults.properties"
+
+    // Configure which keys should be ignored by the plugin by providing regular expressions.
+    // "sdk.dir" is ignored by default.
+    ignoreList.add("keyToIgnore1") // Ignore the key "keyToIgnore1"
+    ignoreList.add("sdk.*")       // Ignore all keys starting with "sdk"
 }
 // Añadimos esta configuración para KSP
 ksp {
@@ -89,4 +103,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.kotlinx.coroutines.core)
+
+    // Google Maps
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
 }

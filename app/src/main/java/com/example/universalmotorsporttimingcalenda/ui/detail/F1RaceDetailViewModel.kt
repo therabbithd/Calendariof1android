@@ -30,7 +30,9 @@ data class RaceDetailUiState(
     val qualifying: Session? = null,
     val sprint: Session? = null,
     val sprintQualifying: Session? = null,
-    val raceSession: Session? = null
+    val raceSession: Session? = null,
+    val lat: String = "",
+    val long: String = ""
 )
 
 @HiltViewModel
@@ -91,6 +93,8 @@ fun Race.toDetailUiState(): RaceDetailUiState {
             val (d, t) = com.example.universalmotorsporttimingcalenda.util.DateUtils.formatToLocalTime(it.date, it.time)
             Session(d, t)
         },
-        raceSession = Session(formattedRaceDate, formattedRaceTime)
+        raceSession = Session(formattedRaceDate, formattedRaceTime),
+        lat = this.lat,
+        long = this.long
     )
 }

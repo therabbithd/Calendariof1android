@@ -1,0 +1,176 @@
+:root {
+    --bg-color: #0d0d0d;
+    --calc-bg: rgba(255, 255, 255, 0.05);
+    --btn-bg: rgba(255, 255, 255, 0.08);
+    --btn-hover: rgba(255, 255, 255, 0.15);
+    --accent: #ff4d4d;
+    --primary: #007aff;
+    --secondary: #333333;
+    --text: #ffffff;
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Glassmorphism Background Blobs */
+.background-blobs {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--primary);
+    top: -100px;
+    left: -100px;
+}
+
+.blob-2 {
+    width: 350px;
+    height: 350px;
+    background: var(--accent);
+    bottom: -50px;
+    right: -50px;
+}
+
+/* Calculator Styles */
+.calculator-container {
+    perspective: 1000px;
+}
+
+.calculator {
+    background: var(--calc-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    width: 360px;
+    transform: rotateX(5deg);
+    transition: transform 0.3s ease;
+}
+
+.calculator:hover {
+    transform: rotateX(0deg);
+}
+
+.display {
+    text-align: right;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.previous-operand {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    word-break: break-all;
+}
+
+.current-operand {
+    font-size: 2.2rem;
+    font-weight: 600;
+    word-break: break-all;
+}
+
+/* Button Grid */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 18px;
+    height: 65px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: white;
+    background: var(--btn-bg);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn:hover {
+    background: var(--btn-hover);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffd700;
+}
+
+.btn-accent {
+    background: rgba(255, 77, 77, 0.15);
+    color: var(--accent);
+}
+
+.btn-primary {
+    background: var(--primary);
+    box-shadow: 0 8px 15px rgba(0, 122, 255, 0.3);
+}
+
+.btn-primary:hover {
+    background: #0084ff;
+    box-shadow: 0 10px 20px rgba(0, 122, 255, 0.4);
+}
+
+.span-two-h {
+    grid-column: span 2;
+}
+
+.span-two-v {
+    grid-row: span 2;
+    height: 100%;
+}
+
+@media (max-width: 400px) {
+    .calculator {
+        width: 310px;
+        padding: 20px;
+    }
+    .btn {
+        height: 55px;
+        font-size: 1.1rem;
+    }
+}
