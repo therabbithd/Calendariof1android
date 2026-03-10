@@ -3,6 +3,8 @@ package com.example.universalmotorsporttimingcalenda.ui.detail
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -11,26 +13,68 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.universalmotorsporttimingcalenda.R
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateListOf
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import java.io.File
+import java.io.FilenameFilter
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 @Composable
 fun F1RaceDetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: F1RaceDetailViewModel = hiltViewModel()
+    viewModel: F1RaceDetailViewModel = hiltViewModel(),
+    onNavigateToCamera: (Int) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+    val photoFiles = remember { mutableStateListOf<File>() }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            onNavigateToCamera(uiState.round)
+        }
+    }
+
+    LaunchedEffect(uiState.round) {
+        if (uiState.round > 0) {
+            photoFiles.clear()
+            val files = context.filesDir.listFiles()?.filter { file ->
+                file.name.startsWith("race_photo_${uiState.round}_") && file.name.endsWith(".jpg")
+            }?.sortedByDescending { it.lastModified() } ?: emptyList()
+            
+            photoFiles.addAll(files)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -59,7 +103,7 @@ fun F1RaceDetailScreen(
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        text = "ROUND ${uiState.round}",
+                        text = stringResource(id = R.string.round_label, uiState.round),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onPrimary,
@@ -102,7 +146,7 @@ fun F1RaceDetailScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "DETALLES DEL CIRCUITO",
+                            text = stringResource(id = R.string.circuit_details_header),
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
@@ -168,7 +212,7 @@ fun F1RaceDetailScreen(
 
             // Session Schedule Section
             Text(
-                text = "HORARIOS DE SESIÓN",
+                text = stringResource(id = R.string.session_schedule_header),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.padding(top = 8.dp)
@@ -179,22 +223,91 @@ fun F1RaceDetailScreen(
                     .fillMaxWidth()
                     .padding(bottom = 24.dp)
             ) {
-                uiState.firstPractice?.let { SessionItem("PRACTICE 1", it, Icons.Default.PlayArrow) }
-                uiState.secondPractice?.let { SessionItem("PRACTICE 2", it, Icons.Default.PlayArrow) }
-                uiState.thirdPractice?.let { SessionItem("PRACTICE 3", it, Icons.Default.PlayArrow) }
-                uiState.qualifying?.let { SessionItem("QUALIFYING", it, Icons.Default.PlayArrow) }
-                uiState.sprintQualifying?.let { SessionItem("SPRINT QUALIFYING", it, Icons.Default.PlayArrow) }
-                uiState.sprint?.let { SessionItem("SPRINT", it, Icons.Default.PlayArrow) }
+                uiState.firstPractice?.let { SessionItem(stringResource(id = R.string.practice_1), it, Icons.Default.PlayArrow) }
+                uiState.secondPractice?.let { SessionItem(stringResource(id = R.string.practice_2), it, Icons.Default.PlayArrow) }
+                uiState.thirdPractice?.let { SessionItem(stringResource(id = R.string.practice_3), it, Icons.Default.PlayArrow) }
+                uiState.qualifying?.let { SessionItem(stringResource(id = R.string.qualifying), it, Icons.Default.PlayArrow) }
+                uiState.sprintQualifying?.let { SessionItem(stringResource(id = R.string.sprint_qualifying), it, Icons.Default.PlayArrow) }
+                uiState.sprint?.let { SessionItem(stringResource(id = R.string.sprint), it, Icons.Default.PlayArrow) }
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 uiState.raceSession?.let { 
                     SessionItem(
-                        "GRAND PRIX", 
+                        stringResource(id = R.string.grand_prix), 
                         it, 
                         Icons.Default.CheckCircle,
                         isHighlight = true 
                     ) 
+                }
+            }
+
+            // Camera Section
+            Text(
+                text = stringResource(id = R.string.race_photo_header),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    if (photoFiles.isNotEmpty()) {
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp)
+                        ) {
+                            items(photoFiles) { file ->
+                                AsyncImage(
+                                    model = ImageRequest.Builder(context)
+                                        .data(file)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = stringResource(id = R.string.race_photo_header),
+                                    modifier = Modifier
+                                        .width(200.dp)
+                                        .height(250.dp),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+                        }
+                    }
+
+                    Button(
+                        onClick = { 
+                            val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                onNavigateToCamera(uiState.round)
+                            } else {
+                                permissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CameraAlt,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(stringResource(id = R.string.add_photo_button))
+                    }
                 }
             }
         }

@@ -13,10 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.universalmotorsporttimingcalenda.ui.common.AppDrawer
 import com.example.universalmotorsporttimingcalenda.ui.common.AppTopBar
+import com.example.universalmotorsporttimingcalenda.ui.camera.CameraScreen
 import com.example.universalmotorsporttimingcalenda.util.SessionManager
 import kotlinx.coroutines.launch
 
@@ -79,7 +82,12 @@ fun NavGraph(sessionManager: SessionManager) {
                         navController.navigateToRaceDetails(it)
                     }
                 )
-                raceDetailDestination(contentModifier)
+                raceDetailDestination(
+                    modifier = contentModifier,
+                    onNavigateToCamera = { round ->
+                        navController.navigateToCamera(round)
+                    }
+                )
                 loginDestination(
                     contentModifier,
                     onLoginSuccess = {
@@ -89,6 +97,13 @@ fun NavGraph(sessionManager: SessionManager) {
                     }
                 )
                 profileDestination(contentModifier)
+                composable<Route.Camera> { backStackEntry ->
+                    val cameraRoute = backStackEntry.toRoute<Route.Camera>()
+                    CameraScreen(
+                        round = cameraRoute.round,
+                        onPhotoTaken = { navController.popBackStack() }
+                    )
+                }
             }
         }
     }

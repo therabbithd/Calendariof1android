@@ -49,10 +49,11 @@ class F1RaceDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val route = savedStateHandle.toRoute<Route.Detail>()
             val round = route.id.toInt()
-            val raceResult = repository.readOneRace(round)
-            val race = raceResult.getOrNull()
-            race?.let {
-                _uiState.value = it.toDetailUiState()
+            repository.observeOneRace(round).collect { result ->
+                val race = result.getOrNull()
+                race?.let {
+                    _uiState.value = it.toDetailUiState()
+                }
             }
         }
     }

@@ -24,6 +24,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.universalmotorsporttimingcalenda.ui.list.RaceListItemUiState
 import com.example.universalmotorsporttimingcalenda.ui.list.RaceListUiState
 
+import androidx.compose.ui.res.stringResource
+import com.example.universalmotorsporttimingcalenda.R
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun F1RaceListScreen(
@@ -50,7 +53,10 @@ fun F1RaceListScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Se ha producido un error", style = MaterialTheme.typography.titleLarge)
+                Text(
+                    text = stringResource(id = R.string.error_generic),
+                    style = MaterialTheme.typography.titleLarge
+                )
             }
         }
         is RaceListUiState.Success -> {

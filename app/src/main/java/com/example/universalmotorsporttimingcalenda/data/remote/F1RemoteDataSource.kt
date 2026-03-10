@@ -52,4 +52,18 @@ class F1RemoteDataSource @Inject constructor(
             Result.failure<Race>(all.exceptionOrNull() ?: RuntimeException("Unknown error"))
         }
     }
+
+    override suspend fun saveAll(races: List<Race>) {
+        // Not implemented for remote data source
+    }
+
+    override fun observeOneRace(round: Int): Flow<Result<Race>> {
+        return flow {
+            emit(readOneRace(round))
+        }.shareIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            replay = 1
+        )
+    }
 }

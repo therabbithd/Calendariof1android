@@ -7,4 +7,6 @@ interface F1DataSource {
     fun observeRaces(): Flow<Result<List<Race>>>
     suspend fun readAllRaces(): Result<List<Race>>
     suspend fun readOneRace(round: Int): Result<Race>
+    suspend fun saveAll(races: List<Race>)
+    fun observeOneRace(round: Int): Flow<Result<Race>>
 }

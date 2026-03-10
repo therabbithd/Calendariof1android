@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">UniversalMotorsportTimingCalenda</string>
+    <string name="app_name">Universal Motorsport Timing Calendar</string>
+    <string name="menu_description">Menu</string>
+    <string name="profile_picture_description">Profile Picture</string>
+    <string name="guest">Guest</string>
+    <string name="not_logged_in">Not logged in</string>
+    <string name="races">Races</string>
+    <string name="profile">Profile</string>
+    <string name="login">Login</string>
+    <string name="login_title">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="error_generic">An error has occurred</string>
+    <string name="loading_profile">Loading profile...</string>
+    <string name="error_loading_profile">Error loading profile</string>
+    <string name="unknown">Unknown</string>
+    <string name="no_email_provided">No email provided</string>
+    <string name="biography">Biography</string>
+    <string name="no_bio_available">No bio available</string>
+    <string name="round_label">ROUND %1$d</string>
+    <string name="circuit_details_header">CIRCUIT DETAILS</string>
+    <string name="session_schedule_header">SESSION SCHEDULE</string>
+    <string name="race_photo_header">YOUR RACE PHOTO</string>
+    <string name="practice_1">PRACTICE 1</string>
+    <string name="practice_2">PRACTICE 2</string>
+    <string name="practice_3">PRACTICE 3</string>
+    <string name="qualifying">QUALIFYING</string>
+    <string name="sprint_qualifying">SPRINT QUALIFYING</string>
+    <string name="sprint">SPRINT</string>
+    <string name="grand_prix">GRAND PRIX</string>
+    <string name="add_photo_button">ADD PHOTO TO GALLERY</string>
+    <string name="take_photo_description">Take photo</string>
+    <string name="select_language">Select Language</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
 </resources>

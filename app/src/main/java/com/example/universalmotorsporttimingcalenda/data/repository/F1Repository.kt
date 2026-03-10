@@ -7,4 +7,5 @@ interface F1Repository {
     fun observeRaces(): Flow<Result<List<Race>>>
     suspend fun readAllRaces(): Result<List<Race>>
     suspend fun readOneRace(round: Int): Result<Race>
+    fun observeOneRace(round: Int): Flow<Result<Race>>
 }

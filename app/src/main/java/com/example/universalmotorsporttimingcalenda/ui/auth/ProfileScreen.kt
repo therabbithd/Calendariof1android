@@ -21,11 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.universalmotorsporttimingcalenda.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.example.universalmotorsporttimingcalenda.R
 
 @Composable
 fun ProfileScreen(
@@ -90,25 +91,25 @@ fun ProfileScreen(
                                     .background(MaterialTheme.colorScheme.surfaceVariant),
                                 contentAlignment = Alignment.Center
                             ) {
-                                AsyncImage(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(avatarUrl)
-                                        .crossfade(true)
-                                        .build(),
-                                    contentDescription = "Profile Picture",
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .clip(CircleShape),
-                                    contentScale = ContentScale.Crop,
-                                    placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
-                                    error = painterResource(id = R.drawable.ic_launcher_background)
-                                )
+                                    AsyncImage(
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(avatarUrl)
+                                            .crossfade(true)
+                                            .build(),
+                                        contentDescription = stringResource(id = R.string.profile_picture_description),
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(CircleShape),
+                                        contentScale = ContentScale.Crop,
+                                        placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
+                                        error = painterResource(id = R.drawable.ic_launcher_background)
+                                    )
                             }
 
                             Spacer(modifier = Modifier.height(20.dp))
 
                             Text(
-                                text = profile.user?.name ?: viewModel.userName ?: "Unknown",
+                                text = profile.user?.name ?: viewModel.userName ?: stringResource(id = R.string.unknown),
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = (-0.5).sp
@@ -117,7 +118,7 @@ fun ProfileScreen(
                             )
 
                             Text(
-                                text = profile.user?.email ?: viewModel.userEmail ?: "No email provided",
+                                text = profile.user?.email ?: viewModel.userEmail ?: stringResource(id = R.string.no_email_provided),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center
@@ -141,7 +142,7 @@ fun ProfileScreen(
                                 .fillMaxWidth()
                         ) {
                             Text(
-                                text = "Biografía",
+                                text = stringResource(id = R.string.biography),
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary
@@ -149,7 +150,7 @@ fun ProfileScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = if (bioContent.isNullOrBlank()) "No bio available" else bioContent,
+                                text = if (bioContent.isNullOrBlank()) stringResource(id = R.string.no_bio_available) else bioContent,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 lineHeight = 20.sp
@@ -172,7 +173,7 @@ fun ProfileScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Error al cargar el perfil",
+                        text = stringResource(id = R.string.error_loading_profile),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.error
                     )

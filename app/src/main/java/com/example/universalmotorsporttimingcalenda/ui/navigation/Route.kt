@@ -21,6 +21,9 @@ sealed class Route(val route: String) {
 
     @Serializable
     data object Login : Route("login")
+
+    @Serializable
+    data class Camera(val round: Int) : Route(route = "camera[$round]")
 }
 
 fun NavController.navigateToRaceDetails(round: Int) {
@@ -31,12 +34,18 @@ fun NavController.navigateToProfile() {
     this.navigate(Route.Profile)
 }
 
+fun NavController.navigateToCamera(round: Int) {
+    this.navigate(Route.Camera(round))
+}
+
 fun NavGraphBuilder.raceDetailDestination(
     modifier: Modifier = Modifier,
+    onNavigateToCamera: (Int) -> Unit = {}
 ) {
     composable<Route.Detail> {
         F1RaceDetailScreen(
             modifier = modifier,
+            onNavigateToCamera = onNavigateToCamera
         )
     }
 }

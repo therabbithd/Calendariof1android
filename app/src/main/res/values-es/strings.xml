@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Universal Motorsport Timing Calendar</string>
+    <string name="menu_description">Menú</string>
+    <string name="profile_picture_description">Foto de Perfil</string>
+    <string name="guest">Invitado</string>
+    <string name="not_logged_in">Sesión no iniciada</string>
+    <string name="races">Carreras</string>
+    <string name="profile">Perfil</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="error_generic">Se ha producido un error</string>
+    <string name="loading_profile">Cargando perfil...</string>
+    <string name="error_loading_profile">Error al cargar el perfil</string>
+    <string name="unknown">Desconocido</string>
+    <string name="no_email_provided">No se ha proporcionado correo</string>
+    <string name="biography">Biografía</string>
+    <string name="no_bio_available">No hay biografía disponible</string>
+    <string name="round_label">RONDA %1$d</string>
+    <string name="circuit_details_header">DETALLES DEL CIRCUITO</string>
+    <string name="session_schedule_header">HORARIOS DE SESIÓN</string>
+    <string name="race_photo_header">TU FOTO DE LA CARRERA</string>
+    <string name="practice_1">PRÁCTICA 1</string>
+    <string name="practice_2">PRÁCTICA 2</string>
+    <string name="practice_3">PRÁCTICA 3</string>
+    <string name="qualifying">CLASIFICACIÓN</string>
+    <string name="sprint_qualifying">CLASIFICACIÓN SPRINT</string>
+    <string name="sprint">SPRINT</string>
+    <string name="grand_prix">GRAN PREMIO</string>
+    <string name="add_photo_button">AÑADIR FOTO A LA GALERÍA</string>
+    <string name="take_photo_description">Tomar foto</string>
+    <string name="select_language">Seleccionar idioma</string>
+    <string name="english">Inglés</string>
+    <string name="spanish">Español</string>
+</resources>

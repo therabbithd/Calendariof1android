@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.1"
+agp = "8.13.2"
 coilCompose = "3.3.0"
 converterGson = "3.0.0"
 hiltAndroid = "2.57.2"
@@ -25,6 +25,9 @@ materialIcons = "1.6.0"
 mapsCompose = "6.4.3"
 playServicesMaps = "19.0.0"
 secretsGradlePlugin = "2.0.1"
+camerax = "1.3.4"
+accompanistPermissions = "0.34.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
@@ -57,6 +60,12 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended-android", version.ref = "materialIcons" } # Add this
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
 
 [plugins]
 serialize = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialize" }

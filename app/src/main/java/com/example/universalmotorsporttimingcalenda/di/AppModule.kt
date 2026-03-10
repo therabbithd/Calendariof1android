@@ -1,6 +1,7 @@
 package com.example.universalmotorsporttimingcalenda.di
 
 import com.example.universalmotorsporttimingcalenda.data.F1DataSource
+import com.example.universalmotorsporttimingcalenda.data.local.F1LocalDataSource
 import com.example.universalmotorsporttimingcalenda.data.remote.F1RemoteDataSource
 import com.example.universalmotorsporttimingcalenda.data.repository.F1Repository
 import com.example.universalmotorsporttimingcalenda.data.repository.F1RepositoryImpl
@@ -8,6 +9,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -16,8 +18,16 @@ abstract class AppModule {
 
     @Binds
     @Singleton
+    @RemoteDataSource
     abstract fun bindRemoteDataSource(
         ds: F1RemoteDataSource
+    ): F1DataSource
+
+    @Binds
+    @Singleton
+    @LocalDataSource
+    abstract fun bindLocalDataSource(
+        ds: F1LocalDataSource
     ): F1DataSource
 
     @Binds
@@ -26,3 +36,12 @@ abstract class AppModule {
         repository: F1RepositoryImpl
     ): F1Repository
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class LocalDataSource
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class RemoteDataSource
+

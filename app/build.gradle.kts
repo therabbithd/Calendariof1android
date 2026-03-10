@@ -90,6 +90,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended-android:1.6.0") // Or a newer version if available    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -107,4 +108,13 @@ dependencies {
     // Google Maps
     implementation(libs.maps.compose)
     implementation(libs.play.services.maps)
+
+    // CameraX
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+    // Accompanist Permissions
+    implementation(libs.accompanist.permissions)
 }
