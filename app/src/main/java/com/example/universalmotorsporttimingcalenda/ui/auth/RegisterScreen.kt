@@ -9,32 +9,34 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.universalmotorsporttimingcalenda.R
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = hiltViewModel(),
-    onLoginSuccess: () -> Unit,
-    onNavigateToRegister: () -> Unit
+    viewModel: RegisterViewModel = hiltViewModel(),
+    onRegisterSuccess: () -> Unit,
+    onNavigateToLogin: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(uiState) {
         when (uiState) {
-            is LoginUiState.Success -> {
-                onLoginSuccess()
+            is RegisterUiState.Success -> {
+                onRegisterSuccess()
             }
-            is LoginUiState.Error -> {
-                Toast.makeText(context, (uiState as LoginUiState.Error).message, Toast.LENGTH_SHORT).show()
+            is RegisterUiState.Error -> {
+                Toast.makeText(context, (uiState as RegisterUiState.Error).message, Toast.LENGTH_SHORT).show()
+                viewModel.resetState()
             }
             else -> {}
         }
@@ -47,9 +49,19 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = stringResource(id = R.string.login_title), style = MaterialTheme.typography.headlineMedium)
+        // Use Register label as fallback for title if not yet defined in strings.xml, but here we use register_title
+        Text(text = stringResource(id = R.string.register_title), style = MaterialTheme.typography.headlineMedium)
         
         Spacer(modifier = Modifier.height(32.dp))
+
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text(stringResource(id = R.string.name)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = email,
@@ -73,26 +85,26 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { viewModel.login(email, password) },
-            enabled = uiState !is LoginUiState.Loading,
+            onClick = { viewModel.register(email, name, password) },
+            enabled = uiState !is RegisterUiState.Loading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            if (uiState is LoginUiState.Loading) {
+            if (uiState is RegisterUiState.Loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
-                Text(stringResource(id = R.string.login))
+                Text(stringResource(id = R.string.register))
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(id = R.string.no_account_yet),
+            text = stringResource(id = R.string.already_have_account),
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.clickable { onNavigateToRegister() }
+            modifier = Modifier.clickable { onNavigateToLogin() }
         )
     }
 }

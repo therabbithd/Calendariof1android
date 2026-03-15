@@ -50,3 +50,10 @@ data class UserDto(
 data class ErrorResponse(
     @SerializedName("message") val message: String
 )
+
+data class ProfileRequest(
+    @SerializedName("bio") val bio: String,
+    @SerializedName("phone") val phone: String,
+    @SerializedName("address") val address: String,
+    @SerializedName("avatar") val avatar: String
+)

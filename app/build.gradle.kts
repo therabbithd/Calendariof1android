@@ -89,6 +89,7 @@ dependencies {
     // Hilt, ViewModel, Navigation etc.
     implementation("androidx.compose.material:material-icons-extended-android:1.6.0") // Or a newer version if available    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation(platform(libs.androidx.compose.bom))
@@ -117,4 +118,7 @@ dependencies {
 
     // Accompanist Permissions
     implementation(libs.accompanist.permissions)
+
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
 }

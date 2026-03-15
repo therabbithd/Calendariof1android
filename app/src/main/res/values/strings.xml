@@ -33,4 +33,21 @@
     <string name="select_language">Select Language</string>
     <string name="english">English</string>
     <string name="spanish">Spanish</string>
+    <string name="home_description">Your session-by-session guide to racing.</string>
+    <string name="login_button_label">Iniciar Sesión</string>
+    <string name="calendar_button_label">Calendario</string>
+    <string name="register">Register</string>
+    <string name="register_title">Create Account</string>
+    <string name="name">Name</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    <string name="no_account_yet">Don\'t have an account? Register</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="bio_label">Bio</string>
+    <string name="phone_label">Phone</string>
+    <string name="address_label">Address</string>
+    <string name="avatar_url_label">Avatar URL</string>
+    <string name="submit_profile">Save Profile</string>
+    <string name="skip_profile">Skip for now</string>
+    <string name="logout">Logout</string>
+    <string name="back">Back</string>
 </resources>

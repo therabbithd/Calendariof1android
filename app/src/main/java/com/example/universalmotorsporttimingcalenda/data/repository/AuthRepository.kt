@@ -6,6 +6,7 @@ import com.example.universalmotorsporttimingcalenda.data.remote.model.LoginReque
 import com.example.universalmotorsporttimingcalenda.data.remote.model.ProfileDto
 import com.example.universalmotorsporttimingcalenda.data.remote.model.RegisterRequest
 import com.example.universalmotorsporttimingcalenda.data.remote.model.UserDto
+import com.example.universalmotorsporttimingcalenda.data.remote.model.ProfileRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -15,6 +16,8 @@ interface AuthRepository {
     fun login(email: String, password: String): Flow<Result<AuthResponse>>
     fun register(email: String, name: String, password: String): Flow<Result<AuthResponse>>
     fun getMe(token: String): Flow<Result<ProfileDto>>
+    fun getProfile(token: String): Flow<Result<ProfileDto>>
+    fun createProfile(token: String, request: ProfileRequest): Flow<Result<ProfileDto>>
 }
 
 @Singleton
@@ -55,6 +58,37 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(Result.success(response.body()!!))
             } else {
                 emit(Result.failure(Exception(response.errorBody()?.string() ?: "Failed to fetch user")))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+    override fun getProfile(token: String): Flow<Result<ProfileDto>> = flow {
+        try {
+            val response = api.getProfile("Bearer $token")
+            if (response.isSuccessful && response.body() != null) {
+                val profiles = response.body()!!
+                if (profiles.isNotEmpty()) {
+                    emit(Result.success(profiles.first()))
+                } else {
+                    emit(Result.failure(Exception("No profile found")))
+                }
+            } else {
+                emit(Result.failure(Exception(response.errorBody()?.string() ?: "Failed to fetch profile")))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+    override fun createProfile(token: String, request: ProfileRequest): Flow<Result<ProfileDto>> = flow {
+        try {
+            val response = api.createProfile("Bearer $token", request)
+            if (response.isSuccessful && response.body() != null) {
+                emit(Result.success(response.body()!!))
+            } else {
+                emit(Result.failure(Exception(response.errorBody()?.string() ?: "Failed to create profile")))
             }
         } catch (e: Exception) {
             emit(Result.failure(e))

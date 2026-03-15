@@ -33,4 +33,21 @@
     <string name="select_language">Seleccionar idioma</string>
     <string name="english">Inglés</string>
     <string name="spanish">Español</string>
+    <string name="home_description">Tu guía sesión a sesión para las carreras.</string>
+    <string name="login_button_label">Iniciar Sesión</string>
+    <string name="calendar_button_label">Calendario</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="register">Registrarse</string>
+    <string name="register_title">Crear Cuenta</string>
+    <string name="name">Nombre</string>
+    <string name="already_have_account">¿Ya tienes una cuenta? Iniciar Sesión</string>
+    <string name="no_account_yet">¿No tienes cuenta? Regístrate</string>
+    <string name="create_profile">Crear Perfil</string>
+    <string name="bio_label">Biografía</string>
+    <string name="phone_label">Teléfono</string>
+    <string name="address_label">Dirección</string>
+    <string name="avatar_url_label">URL del Avatar</string>
+    <string name="submit_profile">Guardar Perfil</string>
+    <string name="skip_profile">Omitir por ahora</string>
+    <string name="back">Atrás</string>
 </resources>

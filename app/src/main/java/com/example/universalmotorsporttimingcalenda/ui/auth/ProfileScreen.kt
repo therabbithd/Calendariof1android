@@ -23,17 +23,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import com.example.universalmotorsporttimingcalenda.R
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val userName by viewModel.userName.collectAsStateWithLifecycle(initialValue = null)
+    val userEmail by viewModel.userEmail.collectAsStateWithLifecycle(initialValue = null)
+    val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle(initialValue = null)
 
     val gradient = Brush.verticalGradient(
         colors = listOf(
@@ -49,7 +54,7 @@ fun ProfileScreen(
         contentAlignment = Alignment.TopCenter
     ) {
         when (val state = uiState) {
-            is ProfileUiState.Initial, is ProfileUiState.Loading -> {
+            is ProfileUiState.Initial, is ProfileUiState.Loading, is ProfileUiState.CreationSuccess -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
@@ -57,7 +62,7 @@ fun ProfileScreen(
             is ProfileUiState.Success -> {
                 val profile = state.profile
                 // Look for avatar and bio in both root and nested user
-                val avatarUrl = profile.avatar ?: profile.user?.avatar ?: viewModel.userAvatar
+                val avatarUrl = profile.avatar ?: profile.user?.avatar ?: userAvatar
                 val bioContent = profile.bio ?: profile.user?.bio
 
                 Column(
@@ -109,7 +114,7 @@ fun ProfileScreen(
                             Spacer(modifier = Modifier.height(20.dp))
 
                             Text(
-                                text = profile.user?.name ?: viewModel.userName ?: stringResource(id = R.string.unknown),
+                                text = profile.user?.name ?: userName ?: stringResource(id = R.string.unknown),
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = (-0.5).sp
@@ -118,7 +123,7 @@ fun ProfileScreen(
                             )
 
                             Text(
-                                text = profile.user?.email ?: viewModel.userEmail ?: stringResource(id = R.string.no_email_provided),
+                                text = profile.user?.email ?: userEmail ?: stringResource(id = R.string.no_email_provided),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center

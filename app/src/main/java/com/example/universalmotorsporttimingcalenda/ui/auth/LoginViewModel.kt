@@ -27,11 +27,12 @@ class LoginViewModel @Inject constructor(
             repository.login(email, password).collect { result ->
                 if (result.isSuccess) {
                     val response = result.getOrNull()
-                    sessionManager.token = response?.token
-                    sessionManager.userName = response?.user?.name
-                    sessionManager.userEmail = response?.user?.email
-                    // Check for avatar in both user object and root response
-                    sessionManager.userAvatar = response?.user?.avatar ?: response?.avatar
+                    sessionManager.saveSession(
+                        token = response?.token,
+                        name = response?.user?.name,
+                        email = response?.user?.email,
+                        avatar = response?.user?.avatar ?: response?.avatar
+                    )
                     _uiState.value = LoginUiState.Success(response?.token ?: "")
                 } else {
                     _uiState.value = LoginUiState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
