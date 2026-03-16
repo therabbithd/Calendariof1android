@@ -2,6 +2,7 @@ package com.example.universalmotorsporttimingcalenda.di
 
 import com.example.universalmotorsporttimingcalenda.data.remote.F1Api
 import com.example.universalmotorsporttimingcalenda.data.remote.F1RemoteDataSource
+import com.example.universalmotorsporttimingcalenda.data.remote.WeatherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +17,17 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class RemoteModule {
+
+    @Provides
+    @Singleton
+    fun provideWeatherApi(): WeatherApi {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.open-meteo.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return retrofit.create(WeatherApi::class.java)
+    }
 
     @Provides
     @Singleton

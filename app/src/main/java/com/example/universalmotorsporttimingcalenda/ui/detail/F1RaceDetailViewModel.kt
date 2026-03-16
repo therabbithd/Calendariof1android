@@ -18,6 +18,9 @@ import com.example.universalmotorsporttimingcalenda.util.FlagMapping
 import javax.inject.Inject
 
 import com.example.universalmotorsporttimingcalenda.data.model.Session
+import com.example.universalmotorsporttimingcalenda.data.repository.SessionWeather
+import com.example.universalmotorsporttimingcalenda.data.repository.WeatherRepository
+import com.example.universalmotorsporttimingcalenda.data.remote.WeatherResponse
 
 data class RaceDetailUiState(
     val round: Int = 0,
@@ -36,13 +39,21 @@ data class RaceDetailUiState(
     val raceSession: Session? = null,
     val lat: String = "",
     val long: String = "",
-    val flagUrl: String = ""
+    val flagUrl: String = "",
+    val firstPracticeWeather: SessionWeather? = null,
+    val secondPracticeWeather: SessionWeather? = null,
+    val thirdPracticeWeather: SessionWeather? = null,
+    val qualifyingWeather: SessionWeather? = null,
+    val sprintWeather: SessionWeather? = null,
+    val sprintQualifyingWeather: SessionWeather? = null,
+    val raceSessionWeather: SessionWeather? = null
 )
 
 @HiltViewModel
 class F1RaceDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: F1Repository
+    private val repository: F1Repository,
+    private val weatherRepository: WeatherRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<RaceDetailUiState> =
@@ -55,10 +66,32 @@ class F1RaceDetailViewModel @Inject constructor(
             val round = route.id.toInt()
             repository.observeOneRace(round).collect { result ->
                 val race = result.getOrNull()
-                race?.let {
-                    _uiState.value = it.toDetailUiState()
+                race?.let { r ->
+                    _uiState.value = r.toDetailUiState()
+                    fetchWeather(r)
                 }
             }
+        }
+    }
+
+    private fun fetchWeather(race: Race) {
+        viewModelScope.launch {
+            val result = weatherRepository.getWeatherData(
+                lat = race.lat.toDoubleOrNull() ?: 0.0,
+                lon = race.long.toDoubleOrNull() ?: 0.0,
+                date = race.date
+            )
+            val weatherResponse = result.getOrNull() ?: return@launch
+            
+            _uiState.value = _uiState.value.copy(
+                firstPracticeWeather = race.firstPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
+                secondPracticeWeather = race.secondPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
+                thirdPracticeWeather = race.thirdPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
+                qualifyingWeather = race.qualifying?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
+                sprintWeather = race.sprint?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
+                sprintQualifyingWeather = race.sprintQualifying?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
+                raceSessionWeather = race.time?.let { weatherRepository.getSessionWeather(weatherResponse, it) }
+            )
         }
     }
 

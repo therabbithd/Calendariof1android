@@ -16,9 +16,15 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -253,12 +259,12 @@ fun F1RaceDetailScreen(
                     .fillMaxWidth()
                     .padding(bottom = 24.dp)
             ) {
-                uiState.firstPractice?.let { SessionItem(stringResource(id = R.string.practice_1), it, Icons.Default.PlayArrow) }
-                uiState.secondPractice?.let { SessionItem(stringResource(id = R.string.practice_2), it, Icons.Default.PlayArrow) }
-                uiState.thirdPractice?.let { SessionItem(stringResource(id = R.string.practice_3), it, Icons.Default.PlayArrow) }
-                uiState.qualifying?.let { SessionItem(stringResource(id = R.string.qualifying), it, Icons.Default.PlayArrow) }
-                uiState.sprintQualifying?.let { SessionItem(stringResource(id = R.string.sprint_qualifying), it, Icons.Default.PlayArrow) }
-                uiState.sprint?.let { SessionItem(stringResource(id = R.string.sprint), it, Icons.Default.PlayArrow) }
+                uiState.firstPractice?.let { SessionItem(stringResource(id = R.string.practice_1), it, Icons.Default.PlayArrow, uiState.firstPracticeWeather) }
+                uiState.secondPractice?.let { SessionItem(stringResource(id = R.string.practice_2), it, Icons.Default.PlayArrow, uiState.secondPracticeWeather) }
+                uiState.thirdPractice?.let { SessionItem(stringResource(id = R.string.practice_3), it, Icons.Default.PlayArrow, uiState.thirdPracticeWeather) }
+                uiState.qualifying?.let { SessionItem(stringResource(id = R.string.qualifying), it, Icons.Default.PlayArrow, uiState.qualifyingWeather) }
+                uiState.sprintQualifying?.let { SessionItem(stringResource(id = R.string.sprint_qualifying), it, Icons.Default.PlayArrow, uiState.sprintQualifyingWeather) }
+                uiState.sprint?.let { SessionItem(stringResource(id = R.string.sprint), it, Icons.Default.PlayArrow, uiState.sprintWeather) }
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
@@ -267,6 +273,7 @@ fun F1RaceDetailScreen(
                         stringResource(id = R.string.grand_prix), 
                         it, 
                         Icons.Default.CheckCircle,
+                        uiState.raceSessionWeather,
                         isHighlight = true 
                     ) 
                 }
@@ -425,6 +432,7 @@ fun SessionItem(
     name: String, 
     session: com.example.universalmotorsporttimingcalenda.data.model.Session,
     icon: ImageVector,
+    weather: com.example.universalmotorsporttimingcalenda.data.repository.SessionWeather? = null,
     isHighlight: Boolean = false
 ) {
     val backgroundColor = if (isHighlight) {
@@ -468,20 +476,54 @@ fun SessionItem(
                 )
             }
             
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = session.date,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = session.time,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                weather?.let {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(end = 12.dp)
+                    ) {
+                        Icon(
+                            imageVector = it.weatherCode.toWeatherIcon(),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Text(
+                            text = "${it.temperature.toInt()}°C",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = session.date,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = session.time,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }
     Spacer(modifier = Modifier.height(8.dp))
+}
+
+@Composable
+fun Int.toWeatherIcon(): ImageVector {
+    return when (this) {
+        0 -> Icons.Default.WbSunny
+        1, 2, 3 -> Icons.Default.Cloud
+        45, 48 -> Icons.Default.Cloud
+        51, 53, 55, 61, 63, 65, 80, 81, 82 -> Icons.Default.WaterDrop
+        71, 73, 75, 85, 86 -> Icons.Default.AcUnit
+        95, 96, 99 -> Icons.Default.Bolt
+        else -> Icons.Default.Cloud
+    }
 }

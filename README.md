@@ -54,6 +54,35 @@ MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
 ```
 
 
+## ⚙️ Detalles de Implementación
+
+### 🏁 Visualización de Carreras
+La lista de carreras se gestiona en `F1RaceListScreen`, donde cada Gran Premio se representa mediante el componente `RaceCard`. Este componente destaca:
+- El **número de ronda** en un bloque de color primario.
+- El **nombre del GP y circuito** con tipografía enfatizada.
+- Información de **ubicación y fecha** acompañada de iconos descriptivos.
+- El uso de `LazyColumn` para una carga eficiente de la lista.
+
+### 🕒 Gestión de Zonas Horarias
+Para garantizar que el usuario nunca pierda una sesión, la aplicación implementa una lógica de conversión automática en `DateUtils.kt`:
+1. Los datos se reciben en formato **UTC** desde la API de Ergast.
+2. Se utiliza `SimpleDateFormat` configurado con `TimeZone.getTimeZone("UTC")` para el parseo inicial.
+3. El resultado se formatea utilizando `TimeZone.getDefault()`, adaptando automáticamente las horas y fechas a la configuración regional del dispositivo del usuario.
+
+### 🚩 Sistema de Banderas Dinámico
+En lugar de almacenar cientos de recursos locales, la aplicación utiliza un mapeo inteligente en `FlagMapping.kt`:
+- Un diccionario asocia nombres de países con sus códigos **ISO 3166-1 alpha-2**.
+- Las imágenes se cargan dinámicamente desde la CDN **[flagcdn.com](https://flagcdn.com/)**.
+- Esto reduce el tamaño del APK y permite actualizaciones rápidas de los activos visuales.
+
+### 🌦️ Integración de Clima (Open-Meteo)
+La aplicación integra datos meteorológicos en tiempo real para cada sesión (Prácticas, Clasificación, Carrera):
+- **API**: Se utiliza **[Open-Meteo](https://open-meteo.com/)**, una API de código abierto que no requiere claves privadas.
+- **Lógica**: Se envían las coordenadas exactas del circuito (latitud/longitud) y el rango de fechas de la sesión.
+- **UI**: Los códigos meteorológicos de WMO se mapean a iconos visuales (`WbSunny`, `Cloud`, `WaterDrop`, etc.) y se muestra la temperatura prevista en grados Celsius.
+
+---
+
 ## ✅ Cumplimiento de Requisitos
 
 Este proyecto ha sido desarrollado cumpliendo estrictamente con los siguientes requisitos técnicos:
