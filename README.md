@@ -81,6 +81,13 @@ La aplicación integra datos meteorológicos en tiempo real para cada sesión (P
 - **Lógica**: Se envían las coordenadas exactas del circuito (latitud/longitud) y el rango de fechas de la sesión.
 - **UI**: Los códigos meteorológicos de WMO se mapean a iconos visuales (`WbSunny`, `Cloud`, `WaterDrop`, etc.) y se muestra la temperatura prevista en grados Celsius.
 
+### 📅 Calendario de Eventos Personalizado
+Se ha implementado un sistema de calendario desde cero para gestionar la densidad de eventos de la F1:
+- **Interfaz a Medida**: Un componente `CalendarGrid` que permite navegar por meses y visualizar los días del mes actual.
+- **Agrupación Inteligente**: En `CalendarViewModel`, todas las sesiones (Libres, Clasificación, Sprint y Carrera) se agrupan por fecha para una consulta rápida.
+- **Indicadores Visuales**: Los días con eventos programados muestran un punto rojo distintivo, permitiendo al usuario identificar rápidamente los fines de semana de carrera.
+- **Navegación Contextual**: Al seleccionar un día, se despliega una lista de sesiones que vinculan directamente al detalle específico de la ronda correspondiente.
+
 ---
 
 ## ✅ Cumplimiento de Requisitos
