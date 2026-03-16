@@ -34,6 +34,7 @@ class RegisterViewModel @Inject constructor(
                     if (authResponse != null) {
                         sessionManager.saveSession(
                             token = authResponse.token,
+                            userId = authResponse.user.id.toString(),
                             name = authResponse.user.name,
                             email = authResponse.user.email,
                             avatar = authResponse.avatar
@@ -43,7 +44,8 @@ class RegisterViewModel @Inject constructor(
                         _uiState.value = RegisterUiState.Error("Registration response was empty")
                     }
                 } else {
-                    _uiState.value = RegisterUiState.Error(result.exceptionOrNull()?.message ?: "Registration failed")
+                    val rawError = result.exceptionOrNull()?.message ?: "Registration failed"
+                    _uiState.value = RegisterUiState.Error(com.example.universalmotorsporttimingcalenda.util.ErrorHandler.parseError(rawError))
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.example.universalmotorsporttimingcalenda.ui.auth
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -7,15 +9,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,14 +22,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import com.example.universalmotorsporttimingcalenda.R
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.universalmotorsporttimingcalenda.ui.common.UserAvatar
 
 @Composable
 fun ProfileScreen(
+    onNavigateToEdit: () -> Unit,
+    onNavigateToCreate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -68,8 +66,9 @@ fun ProfileScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                         .padding(horizontal = 24.dp)
-                        .padding(top = 60.dp),
+                        .padding(top = 60.dp, bottom = 100.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // Profile Header Card
@@ -87,29 +86,14 @@ fun ProfileScreen(
                                 .fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            // Avatar with border
-                            Box(
+                            // Avatar with fallback
+                            UserAvatar(
+                                userName = profile.user?.name ?: userName,
+                                avatarSource = avatarUrl,
+                                size = 130.dp,
                                 modifier = Modifier
-                                    .size(130.dp)
-                                    .clip(CircleShape)
                                     .border(3.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                    AsyncImage(
-                                        model = ImageRequest.Builder(LocalContext.current)
-                                            .data(avatarUrl)
-                                            .crossfade(true)
-                                            .build(),
-                                        contentDescription = stringResource(id = R.string.profile_picture_description),
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .clip(CircleShape),
-                                        contentScale = ContentScale.Crop,
-                                        placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
-                                        error = painterResource(id = R.drawable.ic_launcher_background)
-                                    )
-                            }
+                            )
 
                             Spacer(modifier = Modifier.height(20.dp))
 
@@ -161,6 +145,43 @@ fun ProfileScreen(
                                 lineHeight = 20.sp
                             )
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = onNavigateToEdit,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(
+                            text = "Modificar Perfil",
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+            }
+            is ProfileUiState.NoProfile -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "No tienes un perfil creado todavía",
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = onNavigateToCreate,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Crear Perfil")
                     }
                 }
             }

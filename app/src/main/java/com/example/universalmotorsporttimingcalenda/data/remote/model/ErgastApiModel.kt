@@ -23,7 +23,7 @@ data class RaceTable(
 
 data class RaceRemote(
     val season: String,
-    val round: String,
+    val round: String?,
     val url: String,
     val raceName: String,
     @SerializedName("Circuit") val circuit: CircuitRemote,
@@ -56,10 +56,11 @@ data class SessionRemote(
     val time: String
 )
 
-fun RaceRemote.toExternal(): Race {
+fun RaceRemote.toExternal(): Race? {
+    val roundInt = round?.toIntOrNull() ?: return null
     return Race(
         season = season,
-        round = round.toIntOrNull() ?: 0,
+        round = roundInt,
         raceName = raceName,
         circuitName = circuit.circuitName,
         locality = circuit.location.locality,

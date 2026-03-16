@@ -7,8 +7,11 @@ import com.example.universalmotorsporttimingcalenda.data.repository.F1Repository
 import com.example.universalmotorsporttimingcalenda.data.repository.F1RepositoryImpl
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import com.example.universalmotorsporttimingcalenda.data.remote.model.CloudinaryConfig
+import com.example.universalmotorsporttimingcalenda.BuildConfig
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -35,6 +38,19 @@ abstract class AppModule {
     abstract fun bindF1Repository(
         repository: F1RepositoryImpl
     ): F1Repository
+
+    companion object {
+        @Provides
+        @Singleton
+        fun provideCloudinaryConfig(): CloudinaryConfig {
+            return CloudinaryConfig(
+                cloudName = BuildConfig.CLOUDINARY_CLOUD_NAME,
+                apiKey = BuildConfig.CLOUDINARY_API_KEY,
+                apiSecret = BuildConfig.CLOUDINARY_API_SECRET,
+                uploadPreset = BuildConfig.CLOUDINARY_UPLOAD_PRESET
+            )
+        }
+    }
 }
 
 @Qualifier

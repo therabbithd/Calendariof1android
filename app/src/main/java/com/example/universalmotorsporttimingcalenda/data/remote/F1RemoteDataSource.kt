@@ -32,7 +32,7 @@ class F1RemoteDataSource @Inject constructor(
             val response = api.getSeason2026()
             if (response.isSuccessful) {
                 val body = response.body()!!
-                val races = body.mrData.raceTable.races.map { it.toExternal() }
+                val races = body.mrData.raceTable.races.mapNotNull { it.toExternal() }
                 Result.success(races)
             } else {
                 Result.failure(RuntimeException("Error code: ${response.code()}"))

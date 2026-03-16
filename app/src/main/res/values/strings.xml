@@ -1,5 +1,6 @@
-<resources>
+  <resources>
     <string name="app_name">Universal Motorsport Timing Calendar</string>
+    <string name="home">Home</string>
     <string name="menu_description">Menu</string>
     <string name="profile_picture_description">Profile Picture</string>
     <string name="guest">Guest</string>
@@ -34,8 +35,8 @@
     <string name="english">English</string>
     <string name="spanish">Spanish</string>
     <string name="home_description">Your session-by-session guide to racing.</string>
-    <string name="login_button_label">Iniciar Sesión</string>
-    <string name="calendar_button_label">Calendario</string>
+    <string name="login_button_label">Login</string>
+    <string name="calendar_button_label">Calendar</string>
     <string name="register">Register</string>
     <string name="register_title">Create Account</string>
     <string name="name">Name</string>
@@ -50,4 +51,7 @@
     <string name="skip_profile">Skip for now</string>
     <string name="logout">Logout</string>
     <string name="back">Back</string>
+    <string name="select_image">Select Image</string>
+    <string name="test_notification_button">TEST NOTIFICATION</string>
+    <string name="race_notifications_label">Race Notifications</string>
 </resources>

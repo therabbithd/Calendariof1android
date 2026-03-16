@@ -18,6 +18,7 @@ interface AuthRepository {
     fun getMe(token: String): Flow<Result<ProfileDto>>
     fun getProfile(token: String): Flow<Result<ProfileDto>>
     fun createProfile(token: String, request: ProfileRequest): Flow<Result<ProfileDto>>
+    fun updateProfile(token: String, request: ProfileRequest): Flow<Result<ProfileDto>>
 }
 
 @Singleton
@@ -66,14 +67,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun getProfile(token: String): Flow<Result<ProfileDto>> = flow {
         try {
-            val response = api.getProfile("Bearer $token")
+            val response = api.getMyProfile("Bearer $token")
             if (response.isSuccessful && response.body() != null) {
-                val profiles = response.body()!!
-                if (profiles.isNotEmpty()) {
-                    emit(Result.success(profiles.first()))
-                } else {
-                    emit(Result.failure(Exception("No profile found")))
-                }
+                emit(Result.success(response.body()!!))
             } else {
                 emit(Result.failure(Exception(response.errorBody()?.string() ?: "Failed to fetch profile")))
             }
@@ -89,6 +85,19 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(Result.success(response.body()!!))
             } else {
                 emit(Result.failure(Exception(response.errorBody()?.string() ?: "Failed to create profile")))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+    override fun updateProfile(token: String, request: ProfileRequest): Flow<Result<ProfileDto>> = flow {
+        try {
+            val response = api.updateProfile("Bearer $token", request)
+            if (response.isSuccessful && response.body() != null) {
+                emit(Result.success(response.body()!!))
+            } else {
+                emit(Result.failure(Exception(response.errorBody()?.string() ?: "Failed to update profile")))
             }
         } catch (e: Exception) {
             emit(Result.failure(e))

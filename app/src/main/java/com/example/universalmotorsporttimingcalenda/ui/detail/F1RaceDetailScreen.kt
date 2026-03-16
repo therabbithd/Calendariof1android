@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.core.content.ContextCompat
 
 @Composable
@@ -64,6 +67,14 @@ fun F1RaceDetailScreen(
     ) { isGranted: Boolean ->
         if (isGranted) {
             onNavigateToCamera(uiState.round)
+        }
+    }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            viewModel.scheduleTestNotification(context)
         }
     }
 
@@ -184,13 +195,12 @@ fun F1RaceDetailScreen(
                     Spacer(modifier = Modifier.height(4.dp))
                     
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
+                        AsyncImage(
+                            model = uiState.flagUrl,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(20.dp)
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "${uiState.locality}, ${uiState.country}",
                             style = MaterialTheme.typography.bodyMedium,
@@ -259,6 +269,82 @@ fun F1RaceDetailScreen(
                         Icons.Default.CheckCircle,
                         isHighlight = true 
                     ) 
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedButton(
+                    onClick = {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                            val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                viewModel.scheduleTestNotification(context)
+                            } else {
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        } else {
+                            viewModel.scheduleTestNotification(context)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(stringResource(id = R.string.test_notification_button))
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // New Switch Component
+                var notificationsEnabled by remember { mutableStateOf(true) }
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = if (notificationsEnabled) Icons.Default.Notifications else Icons.Default.NotificationsOff,
+                                contentDescription = null,
+                                tint = if (notificationsEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = stringResource(id = R.string.race_notifications_label),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        Switch(
+                            checked = notificationsEnabled,
+                            onCheckedChange = { notificationsEnabled = it },
+                            thumbContent = if (notificationsEnabled) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Check,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(SwitchDefaults.IconSize),
+                                    )
+                                }
+                            } else null
+                        )
+                    }
                 }
             }
 

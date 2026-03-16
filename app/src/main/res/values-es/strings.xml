@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Universal Motorsport Timing Calendar</string>
+    <string name="home">Inicio</string>
     <string name="menu_description">Menú</string>
     <string name="profile_picture_description">Foto de Perfil</string>
     <string name="guest">Invitado</string>
@@ -50,4 +51,7 @@
     <string name="submit_profile">Guardar Perfil</string>
     <string name="skip_profile">Omitir por ahora</string>
     <string name="back">Atrás</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="test_notification_button">PROBAR NOTIFICACIÓN</string>
+    <string name="race_notifications_label">Notificaciones de la Carrera</string>
 </resources>

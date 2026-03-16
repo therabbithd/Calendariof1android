@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import android.content.Context
+import com.example.universalmotorsporttimingcalenda.util.NotificationScheduler
+import com.example.universalmotorsporttimingcalenda.util.FlagMapping
 import javax.inject.Inject
 
 import com.example.universalmotorsporttimingcalenda.data.model.Session
@@ -32,7 +35,8 @@ data class RaceDetailUiState(
     val sprintQualifying: Session? = null,
     val raceSession: Session? = null,
     val lat: String = "",
-    val long: String = ""
+    val long: String = "",
+    val flagUrl: String = ""
 )
 
 @HiltViewModel
@@ -56,6 +60,15 @@ class F1RaceDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun scheduleTestNotification(context: Context) {
+        val scheduler = NotificationScheduler(context)
+        val raceName = _uiState.value.raceName
+        scheduler.scheduleTestNotification(
+            title = "F1 Test Notification",
+            message = "This is a test notification for $raceName"
+        )
     }
 }
 
@@ -96,6 +109,7 @@ fun Race.toDetailUiState(): RaceDetailUiState {
         },
         raceSession = Session(formattedRaceDate, formattedRaceTime),
         lat = this.lat,
-        long = this.long
+        long = this.long,
+        flagUrl = FlagMapping.getFlagUrl(this.country)
     )
 }

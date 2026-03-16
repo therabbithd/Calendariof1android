@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import com.example.universalmotorsporttimingcalenda.util.FlagMapping
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,7 +54,8 @@ data class RaceListItemUiState(
     val locality: String,
     val country: String,
     val date: String,
-    val time: String?
+    val time: String?,
+    val flagUrl: String
 )
 
 fun Race.asListItemUiState(): RaceListItemUiState {
@@ -64,7 +66,8 @@ fun Race.asListItemUiState(): RaceListItemUiState {
         locality = this.locality,
         country = this.country,
         date = this.date,
-        time = this.time
+        time = this.time,
+        flagUrl = FlagMapping.getFlagUrl(this.country)
     )
 }
 

@@ -25,6 +25,7 @@ import com.example.universalmotorsporttimingcalenda.ui.list.RaceListItemUiState
 import com.example.universalmotorsporttimingcalenda.ui.list.RaceListUiState
 
 import androidx.compose.ui.res.stringResource
+import coil3.compose.AsyncImage
 import com.example.universalmotorsporttimingcalenda.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -161,11 +162,12 @@ fun RaceCard(
                     
                     Spacer(modifier = Modifier.width(16.dp))
                     
-                    Icon(
-                        imageVector = Icons.Default.LocationOn,
+                    Spacer(modifier = Modifier.width(16.dp))
+                    
+                    AsyncImage(
+                        model = race.flagUrl,
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(

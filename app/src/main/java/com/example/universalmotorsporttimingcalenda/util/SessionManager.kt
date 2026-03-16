@@ -14,18 +14,21 @@ class SessionManager @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
     private val TOKEN_KEY = stringPreferencesKey("token")
+    private val USER_ID_KEY = stringPreferencesKey("user_id")
     private val USER_NAME_KEY = stringPreferencesKey("user_name")
     private val USER_EMAIL_KEY = stringPreferencesKey("user_email")
     private val USER_AVATAR_KEY = stringPreferencesKey("user_avatar")
 
     val token: Flow<String?> = dataStore.data.map { it[TOKEN_KEY] }
+    val userId: Flow<String?> = dataStore.data.map { it[USER_ID_KEY] }
     val userName: Flow<String?> = dataStore.data.map { it[USER_NAME_KEY] }
     val userEmail: Flow<String?> = dataStore.data.map { it[USER_EMAIL_KEY] }
     val userAvatar: Flow<String?> = dataStore.data.map { it[USER_AVATAR_KEY] }
 
-    suspend fun saveSession(token: String?, name: String?, email: String?, avatar: String?) {
+    suspend fun saveSession(token: String?, userId: String?, name: String?, email: String?, avatar: String?) {
         dataStore.edit { prefs ->
             if (token != null) prefs[TOKEN_KEY] = token else prefs.remove(TOKEN_KEY)
+            if (userId != null) prefs[USER_ID_KEY] = userId else prefs.remove(USER_ID_KEY)
             if (name != null) prefs[USER_NAME_KEY] = name else prefs.remove(USER_NAME_KEY)
             if (email != null) prefs[USER_EMAIL_KEY] = email else prefs.remove(USER_EMAIL_KEY)
             if (avatar != null) prefs[USER_AVATAR_KEY] = avatar else prefs.remove(USER_AVATAR_KEY)

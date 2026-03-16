@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.universalmotorsporttimingcalenda.R
 import com.example.universalmotorsporttimingcalenda.ui.navigation.Route
 
+
 @Composable
 fun AppDrawer(
     userName: String?,
@@ -25,6 +28,7 @@ fun AppDrawer(
     userAvatar: String?, // Kept for signature compatibility
     currentRoute: String?,
     navigateToHome: () -> Unit,
+    navigateToCalendar: () -> Unit,
     navigateToRaces: () -> Unit,
     navigateToLogin: () -> Unit,
     navigateToProfile: () -> Unit,
@@ -40,14 +44,22 @@ fun AppDrawer(
                 .padding(16.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = stringResource(id = R.string.app_name),
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(CircleShape),
-                    contentScale = ContentScale.Fit
-                )
+                if (isLoggedIn) {
+                    UserAvatar(
+                        userName = userName,
+                        avatarSource = userAvatar,
+                        size = 64.dp
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = stringResource(id = R.string.app_name),
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Fit
+                    )
+                }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
@@ -68,8 +80,19 @@ fun AppDrawer(
         // "Home" item removed as per request
 
         NavigationDrawerItem(
+            label = { Text(stringResource(id = R.string.calendar_button_label)) },
+            icon = { Icon(Icons.Filled.CalendarMonth, contentDescription = null) },
+            selected = currentRoute == Route.Calendar.route,
+            onClick = {
+                navigateToCalendar()
+                closeDrawer()
+            },
+            modifier = Modifier.padding(start = 12.dp, end = 12.dp)
+        )
+
+        NavigationDrawerItem(
             label = { Text(stringResource(id = R.string.races)) },
-            icon = { Icon(Icons.Filled.Home, contentDescription = null) },
+            icon = { Icon(Icons.Filled.List, contentDescription = null) },
             selected = currentRoute == Route.List.route,
             onClick = {
                 navigateToRaces()

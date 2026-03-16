@@ -53,4 +53,27 @@ The application uses Google Maps API to display race circuits. To enable this fe
 MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
 ```
 
-The key will be read from the `.env` file at runtime.
+
+## ✅ Cumplimiento de Requisitos
+
+Este proyecto ha sido desarrollado cumpliendo estrictamente con los siguientes requisitos técnicos:
+
+1.  **Lenguaje Kotlin Idiomático**: Uso de las mejores prácticas de Kotlin, incluyendo `StateFlow`, corrutinas, clases selladas (`Sealed Classes`) y navegación segura con rutas tipadas.
+2.  **Diseño Material 3**: Implementación completa de **Material Design 3**, utilizando componentes modernos como `Scaffold`, `TopAppBar`, `ModalNavigationDrawer` y el sistema de colores dinámicos.
+3.  **Vistas y Layouts Versátiles**: Se demuestra el conocimiento de diversos elementos de UI:
+    *   **Layouts**: `Box`, `Column`, `Row`, `LazyVerticalGrid` (Galeria), `LazyRow` (Fotos de carrera).
+    *   **Componentes**: `Switch` (Notificaciones), `DropdownMenu` (Selector de idioma), `Cards`, `Buttons`, `OutlinedTextField`, entre otros.
+4.  **Internacionalización (i18n)**: Aplicación totalmente traducida a dos idiomas: **Español** e **Inglés**.
+5.  **Arquitectura Android**: Estructura sólida basada en:
+    *   **Patrón Repositorio**: Para la gestión de fuentes de datos.
+    *   **ViewModel**: Para la gestión del estado de la UI.
+    *   **Hilt**: Para una inyección de dependencias robusta.
+6.  **Uso de Observables**: Gestión reactiva del estado utilizando `Flow` y `StateFlow`.
+7.  **Galería y Cámara**:
+    *   **CameraX**: Implementado para capturar fotos personalizadas de las carreras.
+    *   **MediaStore**: Uso de `GalleryHelper` para acceder a la galería del dispositivo.
+8.  **Permisos en Tiempo de Ejecución**: Comprobación y solicitud proactiva de permisos para Cámara, Almacenamiento y Notificaciones.
+9.  **Jetpack Navigation Component**: Navegación moderna y segura entre pantallas mediante el sistema de rutas tipadas.
+10. **WorkerManager y Notificaciones**:
+    *   **WorkManager**: Implementado en `SessionNotificationWorker` para tareas en segundo plano.
+    *   **Notifications**: Sistema de alertas mediante `NotificationHelper`.

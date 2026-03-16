@@ -33,7 +33,13 @@ sealed class Route(val route: String) {
     data object CreateProfile : Route("create_profile")
 
     @Serializable
+    data object EditProfile : Route("edit_profile")
+
+    @Serializable
     data class Camera(val round: Int) : Route(route = "camera[$round]")
+
+    @Serializable
+    data object Calendar : Route("calendar")
 }
 
 fun NavController.navigateToHome() {
@@ -71,6 +77,14 @@ fun NavController.navigateToCreateProfile() {
         popUpTo(Route.Register) { inclusive = true }
         popUpTo(Route.Login) { inclusive = true }
     }
+}
+
+fun NavController.navigateToEditProfile() {
+    this.navigate(Route.EditProfile)
+}
+
+fun NavController.navigateToCalendar() {
+    this.navigate(Route.Calendar)
 }
 
 fun NavGraphBuilder.raceDetailDestination(
@@ -145,10 +159,40 @@ fun NavGraphBuilder.createProfileDestination(
 
 fun NavGraphBuilder.profileDestination(
     modifier: Modifier = Modifier,
+    onNavigateToEdit: () -> Unit,
+    onNavigateToCreate: () -> Unit
 ) {
     composable<Route.Profile> {
         com.example.universalmotorsporttimingcalenda.ui.auth.ProfileScreen(
             modifier = modifier,
+            onNavigateToEdit = onNavigateToEdit,
+            onNavigateToCreate = onNavigateToCreate
+        )
+    }
+}
+
+fun NavGraphBuilder.editProfileDestination(
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit,
+    onUpdateSuccess: () -> Unit
+) {
+    this.composable<Route.EditProfile> {
+        com.example.universalmotorsporttimingcalenda.ui.auth.EditProfileScreen(
+            modifier = modifier,
+            onNavigateBack = onNavigateBack,
+            onUpdateSuccess = onUpdateSuccess
+        )
+    }
+}
+
+fun NavGraphBuilder.calendarDestination(
+    modifier: Modifier = Modifier,
+    onNavigateToDetails: (Int) -> Unit
+) {
+    this.composable<Route.Calendar> {
+        com.example.universalmotorsporttimingcalenda.ui.calendar.CalendarScreen(
+            modifier = modifier,
+            onNavigateToDetails = onNavigateToDetails
         )
     }
 }

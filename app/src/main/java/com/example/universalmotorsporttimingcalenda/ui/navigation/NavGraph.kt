@@ -23,6 +23,7 @@ import com.example.universalmotorsporttimingcalenda.ui.camera.CameraScreen
 import com.example.universalmotorsporttimingcalenda.ui.home.HomeScreen
 import com.example.universalmotorsporttimingcalenda.util.SessionManager
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.universalmotorsporttimingcalenda.ui.common.AppBottomBar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +62,13 @@ fun NavGraph(sessionManager: SessionManager) {
                 navigateToHome = {
                     navController.navigateToHome()
                 },
+                navigateToCalendar = {
+                    if (isLoggedIn) {
+                        navController.navigateToCalendar()
+                    } else {
+                        navController.navigateToLogin()
+                    }
+                },
                 navigateToRaces = {
                     if (isLoggedIn) {
                         navController.navigateToRaceList()
@@ -89,6 +97,33 @@ fun NavGraph(sessionManager: SessionManager) {
                         scope.launch { drawerState.open() }
                     }
                 )
+            },
+            bottomBar = {
+                AppBottomBar(
+                    currentRoute = currentRoute,
+                    onNavigateToHome = { navController.navigateToHome() },
+                    onNavigateToCalendar = {
+                        if (isLoggedIn) {
+                            navController.navigateToCalendar()
+                        } else {
+                            navController.navigateToLogin()
+                        }
+                    },
+                    onNavigateToRaces = {
+                        if (isLoggedIn) {
+                            navController.navigateToRaceList()
+                        } else {
+                            navController.navigateToLogin()
+                        }
+                    },
+                    onNavigateToProfile = {
+                        if (isLoggedIn) {
+                            navController.navigateToProfile()
+                        } else {
+                            navController.navigateToLogin()
+                        }
+                    }
+                )
             }
         ) { innerPadding ->
             val contentModifier =
@@ -103,7 +138,7 @@ fun NavGraph(sessionManager: SessionManager) {
                         onNavigateToLogin = { navController.navigateToLogin() },
                         onNavigateToCalendar = {
                             if (isLoggedIn) {
-                                navController.navigateToRaceList()
+                                navController.navigateToCalendar()
                             } else {
                                 navController.navigateToLogin()
                             }
@@ -168,7 +203,24 @@ fun NavGraph(sessionManager: SessionManager) {
                         navController.navigateToProfile()
                     }
                 )
-                profileDestination(contentModifier)
+                profileDestination(
+                    modifier = contentModifier,
+                    onNavigateToEdit = {
+                        navController.navigateToEditProfile()
+                    },
+                    onNavigateToCreate = {
+                        navController.navigateToCreateProfile()
+                    }
+                )
+                editProfileDestination(
+                    modifier = contentModifier,
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    },
+                    onUpdateSuccess = {
+                        navController.popBackStack()
+                    }
+                )
                 composable<Route.Camera> { backStackEntry ->
                     val cameraRoute = backStackEntry.toRoute<Route.Camera>()
                     CameraScreen(
@@ -176,6 +228,12 @@ fun NavGraph(sessionManager: SessionManager) {
                         onPhotoTaken = { navController.popBackStack() }
                     )
                 }
+                calendarDestination(
+                    modifier = contentModifier,
+                    onNavigateToDetails = { round ->
+                        navController.navigateToRaceDetails(round)
+                    }
+                )
             }
         }
     }

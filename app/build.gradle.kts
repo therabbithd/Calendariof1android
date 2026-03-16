@@ -40,12 +40,13 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 secrets {
     // Optionally specify a different file name or default values
-    propertiesFileName = "local.properties"
+    propertiesFileName = ".env"
 
     // A properties file at this path is expected to be present
     // defaultPropertiesFileName = "secrets.defaults.properties"
@@ -87,7 +88,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // Hilt, ViewModel, Navigation etc.
-    implementation("androidx.compose.material:material-icons-extended-android:1.6.0") // Or a newer version if available    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
@@ -119,6 +121,10 @@ dependencies {
     // Accompanist Permissions
     implementation(libs.accompanist.permissions)
 
-    // DataStore
+    // DataStore & Background
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.cloudinary.android)
+    implementation("com.google.guava:guava:33.0.0-android")
+    implementation(libs.androidx.work.runtime.ktx)
 }
+

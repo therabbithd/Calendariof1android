@@ -28,6 +28,8 @@ data class ProfileDto(
     @SerializedName("userId") val userId: Int?,
     @SerializedName("createdAt") val createdAt: String?,
     @SerializedName("updatedAt") val updatedAt: String?,
+    @SerializedName("configuracion") val configuracion: String? = null,
+    @SerializedName("favoritos") val favoritos: String? = null,
     @SerializedName("user") val user: UserInsideProfileDto?
 )
 
@@ -55,5 +57,7 @@ data class ProfileRequest(
     @SerializedName("bio") val bio: String,
     @SerializedName("phone") val phone: String,
     @SerializedName("address") val address: String,
-    @SerializedName("avatar") val avatar: String
+    @SerializedName("avatar") val avatar: String,
+    @SerializedName("configuracion") val configuracion: String? = "",
+    @SerializedName("favoritos") val favoritos: String? = ""
 )

@@ -29,13 +29,15 @@ class LoginViewModel @Inject constructor(
                     val response = result.getOrNull()
                     sessionManager.saveSession(
                         token = response?.token,
+                        userId = response?.user?.id?.toString(),
                         name = response?.user?.name,
                         email = response?.user?.email,
                         avatar = response?.user?.avatar ?: response?.avatar
                     )
                     _uiState.value = LoginUiState.Success(response?.token ?: "")
                 } else {
-                    _uiState.value = LoginUiState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
+                    val rawError = result.exceptionOrNull()?.message ?: "Unknown error"
+                    _uiState.value = LoginUiState.Error(com.example.universalmotorsporttimingcalenda.util.ErrorHandler.parseError(rawError))
                 }
             }
         }

@@ -11,6 +11,7 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import com.example.universalmotorsporttimingcalenda.data.remote.model.ProfileRequest
+import retrofit2.http.PUT
 
 interface AuthApi {
 
@@ -23,11 +24,20 @@ interface AuthApi {
     @GET("/api/users/me")
     suspend fun getMe(@Header("Authorization") token: String): Response<ProfileDto>
 
+    @GET("/api/profile/me")
+    suspend fun getMyProfile(@Header("Authorization") token: String): Response<ProfileDto>
+
     @GET("/api/profile")
     suspend fun getProfile(@Header("Authorization") token: String): Response<List<ProfileDto>>
 
     @POST("/api/profile")
     suspend fun createProfile(
+        @Header("Authorization") token: String,
+        @Body request: ProfileRequest
+    ): Response<ProfileDto>
+
+    @PUT("/api/profile/me")
+    suspend fun updateProfile(
         @Header("Authorization") token: String,
         @Body request: ProfileRequest
     ): Response<ProfileDto>
