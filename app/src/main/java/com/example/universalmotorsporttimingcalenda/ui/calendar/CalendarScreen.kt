@@ -104,10 +104,10 @@ fun CalendarGrid(
     onDateSelected: (LocalDate) -> Unit
 ) {
     val daysInMonth = selectedMonth.lengthOfMonth()
-    val firstDayOfMonth = selectedMonth.atDay(1).dayOfWeek.value % 7 // 0 for Sunday
+    val firstDayOfMonth = (selectedMonth.atDay(1).dayOfWeek.value + 6) % 7 // 0 for Monday, 1 for Tuesday, ..., 6 for Sunday
     val days = (1..daysInMonth).toList()
 
-    val daysOfWeek = listOf("S", "M", "T", "W", "T", "F", "S")
+    val daysOfWeek = listOf("M", "T", "W", "T", "F", "S", "S")
 
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {

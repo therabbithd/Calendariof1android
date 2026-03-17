@@ -14,15 +14,16 @@ class WeatherRepository @Inject constructor(
     suspend fun getWeatherData(
         lat: Double,
         lon: Double,
-        date: String
+        startDate: String,
+        endDate: String
     ): Result<WeatherResponse> {
         return try {
             // Open-Meteo expects start_date and end_date in yyyy-MM-dd format
             val response = weatherApi.getForecast(
                 lat = lat,
                 lon = lon,
-                startDate = date,
-                endDate = date
+                startDate = startDate,
+                endDate = endDate
             )
             Result.success(response)
         } catch (e: Exception) {
@@ -32,14 +33,16 @@ class WeatherRepository @Inject constructor(
 
     fun getSessionWeather(
         weatherResponse: WeatherResponse,
+        sessionDate: String, // format: yyyy-MM-dd
         sessionTimeUtc: String // Expected format: HH:mm (UTC from Ergast)
     ): SessionWeather? {
         // Open-Meteo hourly times are in "yyyy-MM-dd'T'HH:mm"
-        // We look for the hour that matches sessionTimeUtc
+        // We look for the hour and date that matches
         val targetHour = sessionTimeUtc.split(":")[0]
+        val targetDateTimePrefix = "${sessionDate}T$targetHour"
         
         val index = weatherResponse.hourly.time.indexOfFirst { 
-            it.split("T")[1].startsWith(targetHour) 
+            it.startsWith(targetDateTimePrefix) 
         }
 
         return if (index != -1) {

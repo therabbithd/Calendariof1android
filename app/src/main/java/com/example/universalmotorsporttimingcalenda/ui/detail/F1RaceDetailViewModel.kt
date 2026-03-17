@@ -76,21 +76,38 @@ class F1RaceDetailViewModel @Inject constructor(
 
     private fun fetchWeather(race: Race) {
         viewModelScope.launch {
+            val sessions = listOfNotNull(
+                race.firstPractice,
+                race.secondPractice,
+                race.thirdPractice,
+                race.qualifying,
+                race.sprint,
+                race.sprintQualifying,
+                race.time?.let { Session(race.date, it) }
+            )
+            
+            if (sessions.isEmpty()) return@launch
+
+            val sortedDates = sessions.map { it.date }.sorted()
+            val startDate = sortedDates.first()
+            val endDate = sortedDates.last()
+
             val result = weatherRepository.getWeatherData(
                 lat = race.lat.toDoubleOrNull() ?: 0.0,
                 lon = race.long.toDoubleOrNull() ?: 0.0,
-                date = race.date
+                startDate = startDate,
+                endDate = endDate
             )
             val weatherResponse = result.getOrNull() ?: return@launch
             
             _uiState.value = _uiState.value.copy(
-                firstPracticeWeather = race.firstPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
-                secondPracticeWeather = race.secondPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
-                thirdPracticeWeather = race.thirdPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
-                qualifyingWeather = race.qualifying?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
-                sprintWeather = race.sprint?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
-                sprintQualifyingWeather = race.sprintQualifying?.let { weatherRepository.getSessionWeather(weatherResponse, it.time) },
-                raceSessionWeather = race.time?.let { weatherRepository.getSessionWeather(weatherResponse, it) }
+                firstPracticeWeather = race.firstPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.date, it.time) },
+                secondPracticeWeather = race.secondPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.date, it.time) },
+                thirdPracticeWeather = race.thirdPractice?.let { weatherRepository.getSessionWeather(weatherResponse, it.date, it.time) },
+                qualifyingWeather = race.qualifying?.let { weatherRepository.getSessionWeather(weatherResponse, it.date, it.time) },
+                sprintWeather = race.sprint?.let { weatherRepository.getSessionWeather(weatherResponse, it.date, it.time) },
+                sprintQualifyingWeather = race.sprintQualifying?.let { weatherRepository.getSessionWeather(weatherResponse, it.date, it.time) },
+                raceSessionWeather = race.time?.let { weatherRepository.getSessionWeather(weatherResponse, race.date, it) }
             )
         }
     }
