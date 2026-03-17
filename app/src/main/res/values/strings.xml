@@ -54,4 +54,5 @@
     <string name="select_image">Select Image</string>
     <string name="test_notification_button">TEST NOTIFICATION</string>
     <string name="race_notifications_label">Race Notifications</string>
+    <string name="switch_camera_description">Switch camera</string>
 </resources>

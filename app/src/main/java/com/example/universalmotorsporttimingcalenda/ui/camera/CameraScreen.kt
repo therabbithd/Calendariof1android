@@ -14,10 +14,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.example.universalmotorsporttimingcalenda.R
 import androidx.compose.runtime.remember
@@ -36,7 +41,8 @@ import kotlin.coroutines.suspendCoroutine
 @Composable
 fun CameraScreen(
     round: Int,
-    onPhotoTaken: () -> Unit
+    onPhotoTaken: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -44,15 +50,16 @@ fun CameraScreen(
     val previewView = remember { PreviewView(context) }
     val imageCapture = remember { ImageCapture.Builder().build() }
     val executor = ContextCompat.getMainExecutor(context)
+    var lensFacing by remember { mutableStateOf(CameraSelector.LENS_FACING_BACK) }
 
-    LaunchedEffect(previewView) {
+    LaunchedEffect(previewView, lensFacing) {
         val cameraProvider = context.getCameraProvider()
         cameraProvider.unbindAll()
         val preview = Preview.Builder().build()
         preview.setSurfaceProvider(previewView.surfaceProvider)
 
         val cameraSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+            .requireLensFacing(lensFacing)
             .build()
 
         try {
@@ -67,7 +74,7 @@ fun CameraScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         AndroidView(
             factory = { previewView },
             modifier = Modifier.fillMaxSize()
@@ -90,6 +97,25 @@ fun CameraScreen(
             Icon(
                 imageVector = Icons.Default.CameraAlt,
                 contentDescription = stringResource(id = R.string.take_photo_description)
+            )
+        }
+
+        IconButton(
+            onClick = {
+                lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) {
+                    CameraSelector.LENS_FACING_FRONT
+                } else {
+                    CameraSelector.LENS_FACING_BACK
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Cameraswitch,
+                contentDescription = stringResource(id = R.string.switch_camera_description),
+                tint = androidx.compose.ui.graphics.Color.White
             )
         }
     }

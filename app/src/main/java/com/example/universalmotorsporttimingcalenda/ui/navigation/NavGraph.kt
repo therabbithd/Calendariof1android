@@ -225,7 +225,8 @@ fun NavGraph(sessionManager: SessionManager) {
                     val cameraRoute = backStackEntry.toRoute<Route.Camera>()
                     CameraScreen(
                         round = cameraRoute.round,
-                        onPhotoTaken = { navController.popBackStack() }
+                        onPhotoTaken = { navController.popBackStack() },
+                        modifier = contentModifier
                     )
                 }
                 calendarDestination(
