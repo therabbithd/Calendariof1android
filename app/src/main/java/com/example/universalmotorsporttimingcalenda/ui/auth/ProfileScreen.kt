@@ -155,7 +155,7 @@ fun ProfileScreen(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = "Modificar Perfil",
+                            text = stringResource(id = R.string.modify_profile),
                             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                         )
                     }
@@ -172,7 +172,7 @@ fun ProfileScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "No tienes un perfil creado todavía",
+                        text = stringResource(id = R.string.no_profile_yet),
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center
                     )
@@ -181,7 +181,7 @@ fun ProfileScreen(
                         onClick = onNavigateToCreate,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Crear Perfil")
+                        Text(stringResource(id = R.string.create_profile))
                     }
                 }
             }

@@ -41,7 +41,11 @@ fun AppTopBar(
 
     TopAppBar(
         title = {
-            Text(text = stringResource(id = R.string.app_name))
+            Text(
+                text = stringResource(id = R.string.app_bar_title),
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+            )
         },
         navigationIcon = {
             IconButton(onClick = onMenuClick) {

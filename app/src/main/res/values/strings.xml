@@ -52,7 +52,29 @@
     <string name="logout">Logout</string>
     <string name="back">Back</string>
     <string name="select_image">Select Image</string>
-    <string name="test_notification_button">TEST NOTIFICATION</string>
-    <string name="race_notifications_label">Race Notifications</string>
+    <string name="app_bar_title">Motorsport Calendar</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="retry">Retry</string>
+    <string name="change_picture">Change Picture</string>
+    <string name="no_profile_yet">You don\'t have a profile created yet</string>
+    <string name="modify_profile">Modify Profile</string>
+    <string name="profile_data_not_found">Profile data not found</string>
+    <string name="not_authenticated">Not authenticated</string>
+    <string name="upload_failed">Upload failed: %1$s</string>
+    <string name="update_failed">Update failed</string>
+    <string name="failed_to_parse_update">Failed to parse update response</string>
+    <string name="test_notification_button">View notification</string>
+    <string name="race_notifications_label">Notifications</string>
     <string name="switch_camera_description">Switch camera</string>
+
+    <string name="day_mon">M</string>
+    <string name="day_tue">T</string>
+    <string name="day_wed">W</string>
+    <string name="day_thu">T</string>
+    <string name="day_fri">F</string>
+    <string name="day_sat">S</string>
+    <string name="day_sun">S</string>
+    <string name="sessions_for_date">Sessions for %1$s</string>
+    <string name="no_sessions_scheduled">No sessions scheduled for this day.</string>
 </resources>

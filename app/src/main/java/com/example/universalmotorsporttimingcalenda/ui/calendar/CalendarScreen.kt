@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.universalmotorsporttimingcalenda.R
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -56,7 +58,7 @@ fun CalendarScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Sessions for ${uiState.selectedDate}",
+            text = stringResource(id = R.string.sessions_for_date, uiState.selectedDate.toString()),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
         )
@@ -107,7 +109,15 @@ fun CalendarGrid(
     val firstDayOfMonth = (selectedMonth.atDay(1).dayOfWeek.value + 6) % 7 // 0 for Monday, 1 for Tuesday, ..., 6 for Sunday
     val days = (1..daysInMonth).toList()
 
-    val daysOfWeek = listOf("M", "T", "W", "T", "F", "S", "S")
+    val daysOfWeek = listOf(
+        stringResource(id = R.string.day_mon),
+        stringResource(id = R.string.day_tue),
+        stringResource(id = R.string.day_wed),
+        stringResource(id = R.string.day_thu),
+        stringResource(id = R.string.day_fri),
+        stringResource(id = R.string.day_sat),
+        stringResource(id = R.string.day_sun)
+    )
 
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -200,7 +210,7 @@ fun SessionList(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No sessions scheduled for this day.",
+                text = stringResource(id = R.string.no_sessions_scheduled),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

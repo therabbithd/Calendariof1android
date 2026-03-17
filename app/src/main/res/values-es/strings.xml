@@ -52,7 +52,29 @@
     <string name="skip_profile">Omitir por ahora</string>
     <string name="back">Atrás</string>
     <string name="select_image">Seleccionar Imagen</string>
-    <string name="test_notification_button">ver notificación</string>
-    <string name="race_notifications_label">Notificaciones </string>
+    <string name="test_notification_button">Ver notificación</string>
+    <string name="race_notifications_label">Notificaciones</string>
     <string name="switch_camera_description">Cambiar cámara</string>
+    <string name="app_bar_title">Calendario Motorsport</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="save_changes">Guardar Cambios</string>
+    <string name="retry">Reintentar</string>
+    <string name="change_picture">Cambiar Imagen</string>
+    <string name="no_profile_yet">Aún no tienes un perfil creado</string>
+    <string name="modify_profile">Modificar Perfil</string>
+    <string name="profile_data_not_found">No se encontraron los datos del perfil</string>
+    <string name="not_authenticated">No autenticado</string>
+    <string name="upload_failed">Error al subir: %1$s</string>
+    <string name="update_failed">Error al actualizar</string>
+    <string name="failed_to_parse_update">Error al procesar la respuesta de actualización</string>
+
+    <string name="day_mon">L</string>
+    <string name="day_tue">M</string>
+    <string name="day_wed">X</string>
+    <string name="day_thu">J</string>
+    <string name="day_fri">V</string>
+    <string name="day_sat">S</string>
+    <string name="day_sun">D</string>
+    <string name="sessions_for_date">Sesiones del %1$s</string>
+    <string name="no_sessions_scheduled">No hay sesiones programadas para este día.</string>
 </resources>

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +30,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.universalmotorsporttimingcalenda.data.remote.model.ProfileDto
 import com.example.universalmotorsporttimingcalenda.ui.common.UserAvatar
+import com.example.universalmotorsporttimingcalenda.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,10 +55,10 @@ fun EditProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Edit Profile") },
+                title = { Text(stringResource(id = R.string.edit_profile)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(id = R.string.back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -105,7 +107,7 @@ fun EditProfileScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = { /* Could add retry here */ }) {
-                            Text("Retry")
+                            Text(stringResource(id = R.string.retry))
                         }
                     }
                 }
@@ -181,7 +183,7 @@ fun EditProfileContent(
             ) {
                 Icon(
                     Icons.Default.CameraAlt,
-                    contentDescription = "Change Picture",
+                    contentDescription = stringResource(id = R.string.change_picture),
                     modifier = Modifier
                         .padding(8.dp)
                         .size(20.dp),
@@ -197,7 +199,7 @@ fun EditProfileContent(
         OutlinedTextField(
             value = bio,
             onValueChange = { bio = it },
-            label = { Text("Bio") },
+            label = { Text(stringResource(id = R.string.biography)) },
             modifier = Modifier.fillMaxWidth(),
             minLines = 3
         )
@@ -207,7 +209,7 @@ fun EditProfileContent(
         OutlinedTextField(
             value = phone,
             onValueChange = { phone = it },
-            label = { Text("Phone") },
+            label = { Text(stringResource(id = R.string.phone_label)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -217,7 +219,7 @@ fun EditProfileContent(
         OutlinedTextField(
             value = address,
             onValueChange = { address = it },
-            label = { Text("Address") },
+            label = { Text(stringResource(id = R.string.address_label)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -241,7 +243,7 @@ fun EditProfileContent(
             } else {
                 Icon(Icons.Default.Check, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Save Changes", fontWeight = FontWeight.Bold)
+                Text(stringResource(id = R.string.save_changes), fontWeight = FontWeight.Bold)
             }
         }
     }

@@ -55,7 +55,7 @@ class EditProfileViewModel @Inject constructor(
                         if (profile != null) {
                             _uiState.value = EditProfileUiState.Success(profile)
                         } else {
-                            _uiState.value = EditProfileUiState.Error("Profile data not found")
+                            _uiState.value = EditProfileUiState.Error("Profile data not found") // Will be mapped to R.string.profile_data_not_found if we had a mapper, for now keeping generic
                         }
                     } else {
                         val rawError = result.exceptionOrNull()?.message ?: "Unknown error"
